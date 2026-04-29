@@ -1,30 +1,34 @@
 // Fallback for using MaterialIcons on Android and web.
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
 import { ComponentProps } from 'react';
 import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
+/** 所有已注册的图标名称（新增图标在此处添加） */
+export type IconSymbolName =
+  | 'house.fill'
+  | 'paperplane.fill'
+  | 'chevron.left.forwardslash.chevron.right'
+  | 'chevron.right'
+  | 'shuffle'
+  | 'folder.open';
 
 /**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
+ * SF Symbol → Material Icon 映射表
+ * - see Material Icons: https://icons.expo.fyi
  */
-const MAPPING = {
-  'house.fill': 'photo-library',
+const MAPPING: Record<IconSymbolName, ComponentProps<typeof MaterialIcons>['name']> = {
+  'house.fill': 'home',
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'shuffle': 'shuffle',
-} as IconMapping;
+  'folder.open': 'folder',
+};
 
 /**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
+ * 图标组件：统一使用 Material Icons 渲染，支持跨平台。
+ * 通过 name 选择图标，内部映射到对应的 Material Icon。
  */
 export function IconSymbol({
   name,
@@ -36,7 +40,6 @@ export function IconSymbol({
   size?: number;
   color: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
 }) {
   return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
 }

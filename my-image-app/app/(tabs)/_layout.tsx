@@ -19,7 +19,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: '相册',
+          title: '首页',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
@@ -28,6 +28,13 @@ export default function TabLayout() {
         options={{
           title: '随机',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="shuffle" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="albums"
+        options={{
+          title: '相册管理',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="folder.open" color={color} />,
         }}
       />
     </Tabs>
