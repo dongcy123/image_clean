@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "my-image-app",
+    "slug": "my-image-app",
+    "scheme": "my-image-app-scheme",// 不知道有没有用
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "允许应用访问你的相册以管理和整理照片",
+        "NSPhotoLibraryAddUsageDescription": "允许应用将照片保存到相册"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "允许应用访问你的相册以选择图片。"
+        }
+      ]
+    ]
+  }
+}
