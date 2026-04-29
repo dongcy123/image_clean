@@ -50,4 +50,6 @@ export const fontStyles = StyleSheet.create({
   // 蒙版标签
   maskLabel: createFontStyle(FontSize.lg, '500'),
   loading: createFontStyle(FontSize.md),
+  // 信息栏
+  info: createFontStyle(FontSize.xs, '400'),
 });

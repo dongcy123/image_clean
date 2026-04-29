@@ -10,10 +10,14 @@ import {
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import * as MediaLibrary from 'expo-media-library';
 import { fontStyles } from '../utils/fonts';
 import { PhotoStatus } from '../utils/constants';
 import * as C from '../utils/colors';
 import type { UseSessionProcessorReturn } from '../hooks/useSessionProcessor';
+import { usePhotoInfo } from '../hooks/usePhotoInfo';
+import AlbumTabBar, { AlbumTabBarProps } from './AlbumTabBar';
+import PhotoInfoBar from './PhotoInfoBar';
 
 export interface ProcessViewProps {
   /** 是否正在加载 */
@@ -30,6 +34,11 @@ export interface ProcessViewProps {
   backBtnText?: string;
   /** 导航栏计数区右侧额外内容（如 random 模式的"已完成"标签） */
   navExtra?: React.ReactNode;
+  /** 相册 Tab 栏数据（可选，传入则显示归档功能） */
+  albumBar?: Omit<AlbumTabBarProps, 'activeAlbumId' | 'onAlbumPress' | 'onVisibleChange'> & {
+    onAlbumPress: (albumId: string) => void;
+    onVisibleChange: (visibleIds: Set<string>) => void;
+  };
 }
 
 /**
@@ -46,15 +55,21 @@ export default function ProcessView({
   loadingText = '读取相册中...',
   backBtnText = '返回',
   navExtra,
+  albumBar,
 }: ProcessViewProps) {
   const {
     currentPhoto,
     currentSessionStatus,
+    currentPendingAlbumId,
     currentIndex,
     totalCount,
     handleAction,
+    assignToAlbum,
     setCurrentIndex,
   } = processor;
+
+  // ---- 照片信息（时间 + 地点） ----
+  const photoInfo = usePhotoInfo(currentPhoto);
 
   // ---- 加载态 ----
   if (isLoading) {
@@ -98,6 +113,24 @@ export default function ProcessView({
           <Text style={s.doneText}>完成</Text>
         </TouchableOpacity>
       </View>
+
+      {/* ===== 相册归档 Tab 栏（可选） ===== */}
+      {albumBar && (
+        <AlbumTabBar
+          albums={albumBar.albums}
+          visibleAlbumIds={albumBar.visibleAlbumIds}
+          activeAlbumId={currentPendingAlbumId}
+          onAlbumPress={assignToAlbum}
+          onVisibleChange={albumBar.onVisibleChange}
+        />
+      )}
+
+      {/* ===== 照片信息栏：时间 + 地点 ===== */}
+      <PhotoInfoBar
+        time={photoInfo.time}
+        location={photoInfo.location}
+        locationLoading={photoInfo.locationLoading}
+      />
 
       {/* ===== 图片卡片 ===== */}
       <View style={s.content}>
