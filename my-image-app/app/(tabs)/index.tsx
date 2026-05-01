@@ -11,6 +11,7 @@ import * as C from '../../src/utils/colors';
 
 const { width } = Dimensions.get('window');
 const ITEM_SIZE = width / 3;
+const TARGET_DISPLAY = 300;
 
 /** 首页：相册网格 + 点击进入处理页 */
 export default function Index() {
@@ -56,9 +57,9 @@ export default function Index() {
     }, [loadPhotos])
   );
 
-  // 过滤已归档照片 + 截取前 TARGET_COUNT 张
+  // 过滤已处理的照片
   const displayPhotos = useMemo(() => {
-    return allPhotos.filter(p => !photoMap[p.id]).slice(0, 300);
+    return allPhotos.filter(p => !photoMap[p.id]);
   }, [allPhotos, photoMap]);
 
   if (isLoading && allPhotos.length === 0) {
@@ -78,7 +79,7 @@ export default function Index() {
       </View>
 
       <FlatList
-        data={displayPhotos}
+        data={displayPhotos.slice(0, TARGET_DISPLAY)}
         numColumns={3}
         keyExtractor={item => item.id}
         onRefresh={loadPhotos}
